@@ -9,6 +9,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
 
+//simple Tcp 服务端
 class Widget : public QWidget
 {
     Q_OBJECT
