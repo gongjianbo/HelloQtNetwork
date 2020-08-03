@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     SimpleTcpClient \
-    SimpleTcpServer
+    SimpleTcpServer \
+    SimpleUdpClient
