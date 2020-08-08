@@ -82,7 +82,7 @@ void Widget::initClient()
                 //组播ip必须是D类ip
                 //D类IP段 224.0.0.0 到 239.255.255.255
                 //且组播地址不能是224.0.0.1
-                udpSocket->bind(QHostAddress::AnyIPv4,port); //貌似不能用ipv6
+                udpSocket->bind(QHostAddress::AnyIPv4,port); //根据Qt示例，组播的话IPv4和v6分开的
                 udpSocket->joinMulticastGroup(address); //QHostAddress("224.0.0.2")
                 break;
             default:
