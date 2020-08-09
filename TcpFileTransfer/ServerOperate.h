@@ -40,8 +40,15 @@ public slots:
     void cancelFileTransfer();
 
 private:
+    //初始化
     void initOperate();
+    //把槽对应的实际操作分离出来是为了复用，这样便于组合
     void doDislisten();
+    void doCloseFile();
+    void doCancel();
+    bool readyReceiveFile(qint64 size,const QString &filename);
+    void onReceiveFile(const char *data,qint64 size);
+    void sendData(char type,const QByteArray &data);
     void operateReceiveData(const QByteArray &data);
 
 private:
@@ -53,12 +60,21 @@ private:
     QString address;
     quint16 port;
     //套接字，本demo只允许一个客户端连接
-    QTcpServer *server=nullptr;
-    QTcpSocket *socket=nullptr;
+    QTcpServer *server = nullptr;
+    QTcpSocket *socket = nullptr;
     //文件操作
-    QFile *file=nullptr;
-    //接收缓存
+    QFile *file = nullptr;
+    //文件长度
+    qint64 fileSize = 0;
+    //已接收文件长度
+    qint64 receiveSize = 0;
+    //接收缓存，实际操作时还是用char*好点
     QByteArray dataTemp;
+
+    //帧头+长度+类型
+    char frameHead[7] = { 0x0F, (char)0xF0, 0x00, (char)0xFF, 0x00, 0x00, 0x00 };
+    //帧尾
+    char frameTail[2] = { 0x0D, 0x0A };
 };
 
 #endif // SERVEROPERATE_H

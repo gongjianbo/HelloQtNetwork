@@ -32,7 +32,7 @@ ClientWidget::ClientWidget(QWidget *parent) :
     });
     //选择文件路径
     connect(ui->btnSelect,&QPushButton::clicked,[=]{
-        const QString dir_path=QFileDialog::getExistingDirectory(this);
+        const QString dir_path=QFileDialog::getOpenFileName(this);
         ui->editPath->setText(dir_path);
     });
     connect(ui->editPath,&QLineEdit::textChanged,operate,&ClientOperate::setFilePath);
