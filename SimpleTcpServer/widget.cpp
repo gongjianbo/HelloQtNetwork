@@ -83,13 +83,25 @@ void Widget::initServer()
                 ui->textRecv->append(recv_text);
             });
 
+            //error信号在5.15换了名字
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
             //错误信息
-            connect(socket,&QTcpSocket::errorOccurred,[this,socket](QAbstractSocket::SocketError){
+            connect(socket, static_cast<void(QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error),
+                    [this,socket](QAbstractSocket::SocketError){
                 ui->textRecv->append(QString("[%1:%2] Soket Error:%3")
                                      .arg(socket->peerAddress().toString())
                                      .arg(socket->peerPort())
                                      .arg(socket->errorString()));
             });
+#else
+            //错误信息
+            connect(socket,&QAbstractSocket::errorOccurred,[this,socket](QAbstractSocket::SocketError){
+                ui->textRecv->append(QString("[%1:%2] Soket Error:%3")
+                                     .arg(socket->peerAddress().toString())
+                                     .arg(socket->peerPort())
+                                     .arg(socket->errorString()));
+            });
+#endif
 
             //连接断开，销毁socket对象，这是为了开关server时socket正确释放
             connect(socket,&QTcpSocket::disconnected,[this,socket]{

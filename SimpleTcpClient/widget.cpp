@@ -93,10 +93,19 @@ void Widget::initClient()
         ui->textRecv->append(recv_text);
     });
 
+    //error信号在5.15换了名字
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
     //错误信息
-    connect(client,&QTcpSocket::errorOccurred,[this](QAbstractSocket::SocketError){
+    connect(client, static_cast<void(QAbstractSocket::*)(QAbstractSocket::SocketError)>(&QAbstractSocket::error),
+            [this](QAbstractSocket::SocketError){
         ui->textRecv->append("Socket Error:"+client->errorString());
     });
+#else
+    //错误信息
+    connect(client,&QAbstractSocket::errorOccurred,[this](QAbstractSocket::SocketError){
+        ui->textRecv->append("Socket Error:"+client->errorString());
+    });
+#endif
 }
 
 void Widget::updateState()
