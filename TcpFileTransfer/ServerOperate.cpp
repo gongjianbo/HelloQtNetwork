@@ -140,7 +140,7 @@ bool ServerOperate::readyReceiveFile(qint64 size, const QString &filename)
     }
     //创建qfile用于写文件
     file=new QFile(this);
-    QString file_path;
+    QString file_path=getFilePath();
     if(file_path.isEmpty())
         file_path=QApplication::applicationDirPath();
     file->setFileName(file_path+"/"+filename);
