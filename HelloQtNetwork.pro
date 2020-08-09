@@ -5,3 +5,7 @@ SUBDIRS += \
     SimpleTcpServer \
     SimpleUdpClient \
     TcpFileTransfer
+
+DISTFILES += \
+    LICENSE \
+    README.md
