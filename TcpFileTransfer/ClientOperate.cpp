@@ -261,7 +261,7 @@ void ClientOperate::operateReceiveData(const QByteArray &data)
         {
         case 0x01: //开始发送数据应答
             timer->start(0);
-            emit logMessage("服务器已准备号接收数据，开始发送");
+            emit logMessage("服务器已准备好接收数据，开始发送"+getFilePath());
             break;
         case 0x03: //发送数据完成应答
         {
