@@ -33,17 +33,22 @@ void ServerOperate::initServer()
         QTcpSocket *socket=new QTcpSocket;
         socket->setSocketDescriptor(handle);
         const quint16 peer_port=socket->peerPort();
-        //qDebug()<<"new connect"<<peer_port;
+        //qDebug()<<"new connect"<<peer_port<<QThread::currentThread();
         QThread *thread=new QThread;
         threadList.insert(thread,peer_port);
         socket->moveToThread(thread);
 
         //线程退出时释放
         connect(thread,&QThread::finished,socket,&QTcpSocket::deleteLater);
-        connect(socket,&QTcpSocket::readyRead,this,[=]{
+        //2021-6-28 修改
+        //之前这里接收者填了this，导致readAll在this线程执行，没有达到多线程处理的效果
+        //现去掉接收者this，默认为发送者socket所在线程处理
+        connect(socket,&QTcpSocket::readyRead,[=]{
             while(socket->bytesAvailable()>0){
                 //没有考虑编码，也没考虑数据帧完整性
-                emit clientMessage(peer_port,socket->readAll());
+                const QString msg=socket->readAll()+QString::asprintf("%p",QThread::currentThreadId());
+                emit this->clientMessage(peer_port,msg);
+                //qDebug()<<"socket read"<<peer_port<<QThread::currentThread();
             }
         });
         connect(socket,&QTcpSocket::disconnected,this,[=]{
