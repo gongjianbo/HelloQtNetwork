@@ -17,7 +17,7 @@ Widget::Widget(QWidget *parent)
 Widget::~Widget()
 {
     delete ui;
-    for(QTcpSocket* socket:clientList)
+    for(QTcpSocket *socket:qAsConst(clientList))
         socket->abort();
     qDeleteAll(clientList);
 }

@@ -11,10 +11,10 @@ ServerOperate::ServerOperate(QObject *parent)
 
 ServerOperate::~ServerOperate()
 {
-    QList<QThread *> thread_list=threadList.keys();
+    const QList<QThread *> thread_list=threadList.keys();
     qDebug()<<"thread count"<<thread_list.count();
     threadList.clear();
-    for(QThread *thread:thread_list){
+    for(QThread *thread:qAsConst(thread_list)){
         thread->quit();
         thread->wait();
     }

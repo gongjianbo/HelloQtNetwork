@@ -4,7 +4,7 @@ Show the use of Qt network module. 展示Qt网络模块的使用
 
 # Environment （开发环境）
 
-（2023-03-03）Qt5.15.2 + MSVC2019 32bit/64bit
+（2023-11-13）Qt5.15.2 + MSVC2019/2022 32bit/64bit
 
 # Note （备注）
 

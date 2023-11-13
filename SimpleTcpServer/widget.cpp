@@ -126,7 +126,7 @@ void Widget::initServer()
         //数据为空就返回
         if(send_data.isEmpty())
             return;
-        for(QTcpSocket *socket:clientList)
+        for(QTcpSocket *socket:qAsConst(clientList))
         {
             socket->write(send_data);
             //socket->waitForBytesWritten();
@@ -145,7 +145,7 @@ void Widget::closeServer()
 {
     //停止服务
     server->close();
-    for(QTcpSocket * socket:clientList)
+    for(QTcpSocket * socket:qAsConst(clientList))
     {
         //断开与客户端的连接
         socket->disconnectFromHost();
