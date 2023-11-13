@@ -5,7 +5,8 @@ SUBDIRS += \
     SimpleTcpClient \
     SimpleTcpServer \
     SimpleUdpClient \
-    TcpFileTransfer
+    TcpFileTransfer \
+    TcpNetworkControl
 
 DISTFILES += \
     LICENSE \
